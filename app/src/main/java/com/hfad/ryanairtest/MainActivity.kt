@@ -8,10 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.hfad.ryanairtest.db.MyDBManager
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
@@ -60,18 +57,23 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     fun fillDB(assetName: String) {
 
-        Toast.makeText(applicationContext, "Start filling data", Toast.LENGTH_SHORT).show()
 
-        GlobalScope.launch(Dispatchers.Main) {
+        GlobalScope.launch(Dispatchers.IO) {
             try {
 
-                TaskOneText.text = "Loading DB..."
-                TaskTwoText.text = "Loading DB..."
-                TaskThreeText.text = "Loading DB..."
+                withContext(context = Dispatchers.Main) {
+                    Toast.makeText(applicationContext, "Start filling data", Toast.LENGTH_SHORT)
+                        .show()
 
-                TaskOneText.isEnabled = false
-                TaskTwoText.isEnabled = false
-                TaskThreeText.isEnabled = false
+                    TaskOneText.text = "Loading DB..."
+                    TaskTwoText.text = "Loading DB..."
+                    TaskThreeText.text = "Loading DB..."
+
+                    TaskOneText.isEnabled = false
+                    TaskTwoText.isEnabled = false
+                    TaskThreeText.isEnabled = false
+                }
+
 
                 val myinput = InputStreamReader(assets.open(assetName))
                 val reader = BufferedReader(myinput)
@@ -82,42 +84,45 @@ class MainActivity : AppCompatActivity() {
 
                 val problemRecordList = mutableListOf<Int>() // list of incorrect figures
 
-                async(context = Dispatchers.IO) {
-                    while (reader.readLine().also { line = it } != null) {
-                        val row: List<String> = line!!.split("\"")
-                        try {
-                            val splittedRow = row[0].split(";")
-                            val id = splittedRow[0].toInt()
-                            val shape = splittedRow[1]
-                            val shapeData: String = if (row.size == 1) {
-                                splittedRow[2]
-                            } else {
-                                row[1]
-                            }
-                            myDBManager.insertToDB(id, shape, shapeData)
-                        } catch (e: Exception) {
-                            problemRecordList.add(counter)
+                while (reader.readLine().also { line = it } != null) {
+                    val row: List<String> = line!!.split("\"")
+                    try {
+                        val splittedRow = row[0].split(";")
+                        val id = splittedRow[0].toInt()
+                        val shape = splittedRow[1]
+                        val shapeData: String = if (row.size == 1) {
+                            splittedRow[2]
+                        } else {
+                            row[1]
                         }
-                        if ((counter % 10000) == 0) {
-                            Log.i("Load", counter.toString()) //just for checking
+                        myDBManager.insertToDB(id, shape, shapeData)
+                    } catch (e: Exception) {
+                        problemRecordList.add(counter)
+                    }
+                    if ((counter % 10000) == 0) {
+                        withContext(context = Dispatchers.Main) {
+                            Log.i("Load", counter.toString())//just for checking
                         }
-
-                        counter += 1
 
                     }
-                }.await()
 
+                    counter += 1
 
-                Log.i("Problem", problemRecordList.toString()) //info about incorrect data
+                }
 
-                dbStatus = "full"
-                TaskOneText.text = "Task 1"
-                TaskTwoText.text = "Task 2"
-                TaskThreeText.text = "Task 3"
+                withContext(context = Dispatchers.Main) {
 
-                TaskOneText.isEnabled = true
-                TaskTwoText.isEnabled = true
-                TaskThreeText.isEnabled = true
+                    Log.i("Problem", problemRecordList.toString()) //info about incorrect data
+
+                    dbStatus = "full"
+                    TaskOneText.text = "Task 1"
+                    TaskTwoText.text = "Task 2"
+                    TaskThreeText.text = "Task 3"
+
+                    TaskOneText.isEnabled = true
+                    TaskTwoText.isEnabled = true
+                    TaskThreeText.isEnabled = true
+                }
 
 
             } catch (e: Exception) {
