@@ -3,6 +3,7 @@
 ## Notes
 
 * All data was exported from CSV to Android SQLite (`MainActivity.fillDB()`)
+* First launch is long enough because of DB filling, but after that app can analyze data really quickly
 
 Start Screen:
 
