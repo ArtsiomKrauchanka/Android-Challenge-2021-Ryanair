@@ -1,9 +1,16 @@
+
+
+
+
 # Android-Challenge-2021-Ryanair
 
 ## Notes
 
 * All data was exported from CSV to Android SQLite (`MainActivity.fillDB()`)
 * First launch is long enough because of DB filling, but after that app can analyze data really quickly
+
+
+https://user-images.githubusercontent.com/62513530/119738318-cf6c3a80-be80-11eb-836b-3c1dc40f5a37.mp4
 
 
 Start Screen:
