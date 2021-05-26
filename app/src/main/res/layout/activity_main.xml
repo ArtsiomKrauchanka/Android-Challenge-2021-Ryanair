@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:background="@color/mainTheme"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+
+
+    <TextView
+        android:id="@+id/TaskOneText"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:gravity="bottom"
+        android:text="Task 1"
+        android:textColor="@color/text_color"
+        android:textSize="30sp"
+        android:textIsSelectable="false" />
+
+    <TextView
+        android:id="@+id/TaskTwoText"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:text="Task 2"
+        android:textColor="@color/text_color"
+        android:textSize="30sp"
+        app:layout_constraintTop_toBottomOf="@+id/TaskOne"
+        android:textIsSelectable="false"/>
+
+    <TextView
+        android:id="@+id/TaskThreeText"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:gravity="top"
+        android:text="Task 3"
+        android:textColor="@color/text_color"
+        android:textSize="30sp"
+        app:layout_constraintTop_toBottomOf="@+id/TaskTwo"
+        android:textIsSelectable="false"/>
+
+</LinearLayout>
