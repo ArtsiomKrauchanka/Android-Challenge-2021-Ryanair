@@ -5,6 +5,7 @@
 * All data was exported from CSV to Android SQLite (`MainActivity.fillDB()`)
 * First launch is long enough because of DB filling, but after that app can analyze data really quickly
 
+
 Start Screen:
 
 ![Start Screen](https://github.com/ArtsiomKrauchanka/Android-Challenge-2021-Ryanair/blob/master/Screens/Zrzut%20ekranu%202021-05-26%20210238.png?raw=true)
